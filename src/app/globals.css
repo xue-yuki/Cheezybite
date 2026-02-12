@@ -1,0 +1,64 @@
+:root {
+  --color-primary: #B93628;
+  /* Cheezzy Red */
+  --color-secondary: #FFC845;
+  /* Melted Yellow */
+  --color-background: #FFF6E0;
+  /* Dough Cream */
+  --color-text: #5D3A29;
+  /* Crispy Brown */
+  --color-white: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  /* The font family will be applied via the variable from layout.tsx */
+  /* font-family: var(--font-outfit), sans-serif; */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Lenis Recommended Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

@@ -1,0 +1,90 @@
+.hero {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.videoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Start slightly zoomed out or hidden if needed */
+}
+
+.placeholderVideo {
+    width: 100%;
+    height: 100%;
+    /* Gradient simulating melting cheese */
+    background: radial-gradient(circle at center, #FFC845 0%, #B93628 100%);
+    background-size: 200% 200%;
+    animation: cheeseFlow 10s ease infinite;
+}
+
+@keyframes cheeseFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.textContainer {
+    position: relative;
+    z-index: 2;
+    mix-blend-mode: screen;
+    /* Key for cutout effect on black bg, but here we have colored bg? */
+    /* 
+     Cutout Strategy:
+     Background of textContainer should match the 'page background' (Cream).
+     Text should be transparent or black with mix-blend-mode: destination-out?
+     
+     Simpler Visual Hack for now:
+     Text IS the hole. 
+     So we put a massive overlay with a hole? No.
+     
+     Actually, let's use background-clip on the TEXT to show the video behind? 
+     No, existing element behind.
+     
+     Let's try standard 'Text on top'. 
+     To make it look like a hole, we can make the text color the same as background? No.
+  */
+    background-color: var(--color-background);
+    /* Wait, if I want text to be the hole, I need a mask.
+     Let's use SVGs or stick to standard big text on top for v1. 
+     The 'Zoom through text' works best if the text is effectively a window.
+  */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* If mix-blend-mode is used, background needs to be handled carefully */
+    background: white;
+    /* If using screen, black text becomes transparent? */
+    mix-blend-mode: screen;
+}
+
+.title {
+    font-size: 15vw;
+    line-height: 0.9;
+    font-weight: 900;
+    text-align: center;
+    color: black;
+    /* In screen mode, black is transparent, white is opaque */
+    margin: 0;
+    text-transform: uppercase;
+}
