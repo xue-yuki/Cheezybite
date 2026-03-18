@@ -1,7 +1,6 @@
 import Hero from "@/components/home/Hero";
 import Story from "@/components/home/Story";
-import ProductExplosion from "@/components/home/ProductExplosion";
-import MenuSlider from "@/components/home/MenuSlider";
+import MenuCollection from "@/components/home/MenuCollection";
 import OrderFlow from "@/components/home/OrderFlow";
 import Partnership from "@/components/home/Partnership";
 import SocialProof from "@/components/home/SocialProof";
@@ -13,8 +12,7 @@ export default function Home() {
     <main className={styles.main}>
       <Hero />
       <Story />
-      <ProductExplosion />
-      <MenuSlider />
+      <MenuCollection />
       <OrderFlow />
       <Partnership />
       <SocialProof />

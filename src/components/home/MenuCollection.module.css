@@ -1,0 +1,494 @@
+.menuSection {
+    padding: 120px 0;
+    background-color: var(--color-background);
+    position: relative;
+    overflow: hidden;
+    color: var(--color-text);
+}
+
+.header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 60px;
+    padding: 0 5%;
+    position: relative;
+    z-index: 10;
+}
+
+.title {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* CAROUSEL LOGIC */
+.carouselContainer {
+    width: 100%;
+    position: relative;
+    perspective: 1000px;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+.sliderTrack {
+    --card-width: 320px;
+    --card-gap: 40px;
+    display: flex;
+    align-items: center;
+    gap: var(--card-gap);
+    position: absolute;
+    left: 50%;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-style: preserve-3d;
+    transform: translateX(calc(
+        -1 * (var(--active-index, 1) * (var(--card-width) + var(--card-gap)) + (var(--card-width) / 2))
+    ));
+}
+
+/* CARD LOGIC */
+.menuCard {
+    width: var(--card-width);
+    height: 450px;
+    position: relative;
+    flex-shrink: 0;
+    border-radius: 30px;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+/* Active Center Card */
+.menuCard.activeCard {
+    transform: scale(1.1) translateZ(50px);
+    z-index: 10;
+    opacity: 1;
+    filter: blur(0px);
+}
+
+/* Adjacent Cards */
+.menuCard.prevCard {
+    transform: scale(0.85) translateX(30px) rotateY(15deg);
+    z-index: 5;
+    opacity: 0.6;
+    filter: blur(2px);
+}
+
+.menuCard.nextCard {
+    transform: scale(0.85) translateX(-30px) rotateY(-15deg);
+    z-index: 5;
+    opacity: 0.6;
+    filter: blur(2px);
+}
+
+/* Cards further out */
+.menuCard.hiddenCard {
+    transform: scale(0.7) opacity(0);
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* VISUAL & AURA */
+.productAura {
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    opacity: 0;
+    transition: opacity 1s ease;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+    animation: rotateAura 20s linear infinite;
+}
+
+@keyframes rotateAura {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.activeCard .productAura {
+    opacity: 0.8;
+}
+
+.productVisual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    transform: translateZ(40px); /* Pop out effect */
+    transition: transform 0.6s ease;
+}
+
+.activeCard:hover .productVisual {
+    transform: translateZ(60px) scale(1.05);
+}
+
+/* Product Image and Placeholder Styles */
+.productImage {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+    transition: transform 0.4s ease;
+    animation: floatImage 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatImage {
+    0% { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.imagePlaceholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px dashed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.activeCard:hover .imagePlaceholder {
+    transform: scale(1.05);
+}
+
+.placeholderIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.placeholderText {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* INFO OVERLAY (Glassmorphism) */
+.infoOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%; /* Cover bottom part */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Expand content on hover for active card */
+.activeCard:hover .infoOverlay {
+    height: 65%;
+}
+
+.infoContent {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.itemName {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.itemDesc {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.itemFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 15px;
+}
+
+.itemPrice {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.addBtn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 200, 69, 0.4);
+    z-index: 5;
+}
+
+.addBtn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background-color: var(--color-primary);
+    box-shadow: 0 10px 20px rgba(185, 54, 40, 0.3);
+}
+
+/* QUANTITY CONTROL SYSTEM */
+.qtyControl {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    border-radius: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
+    padding: 2px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    z-index: 5;
+    animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.qtyBtn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--color-primary);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qtyBtn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.qtyText {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    min-width: 32px;
+    text-align: center;
+    user-select: none;
+}
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    z-index: 10;
+    position: relative;
+    padding-bottom: 50px; /* Room for floating cart */
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(93, 58, 41, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.dot.activeDot {
+    background-color: var(--color-primary);
+    transform: scale(1.3);
+    width: 30px;
+    border-radius: 10px;
+}
+
+/* FLOATING CART (Glassmorphism) */
+.floatingCartContainer {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    pointer-events: none; /* Allows clicking through the container edges */
+    animation: slideUpCart 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUpCart {
+    0% { transform: translateY(100px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.floatingCartPanel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 40px;
+    padding: 12px 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    pointer-events: auto; /* Only capture clicks on the panel itself */
+    max-width: 90%;
+}
+
+.cartInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 10px;
+}
+
+.cartBadge {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(255, 200, 69, 0.4);
+}
+
+.cartPriceDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.cartTotalLabel {
+    font-size: 0.8rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cartTotalPrice {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+}
+
+.checkoutBtn {
+    background-color: #25D366; /* WhatsApp Green */
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s ease;
+}
+
+.checkoutBtn:hover {
+    background-color: #1FAF53;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(37, 211, 102, 0.4);
+}
+
+.checkoutIcon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .menuCard {
+        height: 400px;
+    }
+
+    .carouselContainer {
+        height: 450px;
+    }
+    
+    .sliderTrack {
+        --card-width: 280px;
+        --card-gap: 20px;
+    }
+    
+    .floatingCartPanel {
+        border-radius: 20px;
+        padding: 15px;
+        flex-direction: column;
+        width: 100%;
+        margin: 0 15px;
+        max-width: calc(100% - 30px);
+    }
+    
+    .cartInfo {
+        width: 100%;
+        justify-content: flex-start;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding-bottom: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .checkoutBtn {
+        width: 100%;
+        justify-content: center;
+    }
+}

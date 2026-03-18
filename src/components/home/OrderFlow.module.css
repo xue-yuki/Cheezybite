@@ -1,106 +1,214 @@
 .orderSection {
-    padding: 100px 20px;
-    background-color: var(--color-white);
+    padding: 120px 5%;
+    background-color: var(--color-background);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header {
+    max-width: 800px;
+    margin: 0 auto 80px;
+    position: relative;
+    z-index: 2;
 }
 
 .title {
-    font-size: 3rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     color: var(--color-primary);
-    margin-bottom: 60px;
-    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
-.stepsContainer {
+.subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Timeline background track connecting cards on desktop */
+.timelineTrack {
+    display: none;
+    position: absolute;
+    top: 65px; /* Aligns with icon center */
+    left: 12.5%; /* Start midway through first card */
+    right: 12.5%; /* End midway through last card */
+    height: 3px;
+    background: rgba(0, 0, 0, 0.05); /* very faint track */
+    border-radius: 4px;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.timelineProgress {
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.4s ease, opacity 0.3s ease;
+    border-radius: 4px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    opacity: 0; /* GSAP will animate this */
+}
+
+/* New Hover Logic classes managed by React */
+.activeCard {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08), inset 0 0 0 2px var(--color-background);
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 10;
+}
+
+.dimmedCard {
+    opacity: 0.5 !important;
+    filter: grayscale(0.5) blur(1px);
+    transform: scale(0.96);
+}
+
+.numberBadge {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+.iconWrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.stepWrapper {
-    display: flex;
     align-items: center;
+    margin-bottom: 30px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
 }
 
-.stepCard {
-    background: var(--color-background);
-    padding: 30px;
-    border-radius: 20px;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    z-index: 2;
-    border: 2px solid transparent;
-    transition: border-color 0.3s;
+.activeCard .iconWrapper {
+    transform: scale(1.15) rotate(-5deg);
 }
 
-.stepCard:hover {
-    border-color: var(--color-secondary);
+.iconGlow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
 }
 
-.icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    animation: bounce 2s infinite;
+.activeCard .iconGlow {
+    opacity: 0.2;
 }
 
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(-10px);
-    }
-
-    60% {
-        transform: translateY(-5px);
-    }
+.svgIcon {
+    width: 32px;
+    height: 32px;
 }
 
-.stepCard h3 {
+.cardTitle {
     font-size: 1.5rem;
+    font-weight: 800;
     color: var(--color-text);
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    transition: color 0.3s ease;
 }
 
-.stepCard p {
-    color: #777;
-    font-size: 0.9rem;
+.cardDesc {
+    font-size: 1.05rem;
+    color: var(--color-text);
+    opacity: 0.75;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1; /* Pushes the CTA to the bottom consistently */
 }
 
-.connector {
-    width: 50px;
-    /* Length of connector */
-    height: 4px;
-    background-color: var(--color-secondary);
-    margin: 0 10px;
-    border-radius: 2px;
-    align-self: center;
-    margin-top: -30px;
-    /* Align with center of card roughly */
+.ctaButton {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(15px);
 }
 
-@media (max-width: 768px) {
-    .stepsContainer {
-        flex-direction: column;
-        align-items: center;
+.activeCard .ctaButton {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ctaButton:hover {
+    filter: brightness(1.1);
+    transform: scale(1.03) translateY(-2px) !important;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (min-width: 1101px) {
+    .timelineTrack {
+        display: block;
     }
+}
 
-    .connector {
-        width: 4px;
-        height: 50px;
-        margin: 10px 0;
-        margin-top: 0;
+@media (max-width: 1100px) {
+    .gridContainer {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+    .timelineTrack {
+        display: none; /* Hide timeline for multi-row grid */
+    }
+}
+
+@media (max-width: 600px) {
+    .orderSection {
+        padding: 80px 5%;
+    }
+    
+    .gridContainer {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .card {
+        padding: 30px 25px;
     }
 }
