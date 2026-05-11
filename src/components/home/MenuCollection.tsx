@@ -19,7 +19,7 @@ const menuItems = [
         auraColor: "#FFC845", // Yellow
         // INTRUKSI: Masukkan file gambar ke folder "public" lalu panggil namanya disini. 
         // Contoh: Jika file kamu "public/lumpia.png", ubah string di bawah menjadi "/lumpia.png"
-        image: "" 
+        image: "/images/lumpia.png"
     },
     {
         id: "m2",
@@ -28,7 +28,7 @@ const menuItems = [
         price: "Rp 35.000",
         numericPrice: 35000,
         auraColor: "#B93628", // Red
-        image: "" // Ganti dengan "/nama-gambar-dimsum.png"
+        image: "/images/dimsum-keju.png"
     },
     {
         id: "m3",
@@ -37,7 +37,7 @@ const menuItems = [
         price: "Rp 28.000",
         numericPrice: 28000,
         auraColor: "#5D3A29", // Brown
-        image: "" // Ganti dengan "/nama-gambar-pangsit.png"
+        image: "/images/pangsit-pedas.png"
     },
     {
         id: "m4",
@@ -46,7 +46,7 @@ const menuItems = [
         price: "Rp 40.000",
         numericPrice: 40000,
         auraColor: "#e88022", // Orange
-        image: "" // Ganti dengan "/nama-gambar-siomay.png"
+        image: "/images/dimsum-mentai.png"
     }
 ];
 
@@ -118,7 +118,7 @@ export default function MenuCollection() {
         text += `\n*Total: Rp ${totalPrice.toLocaleString('id-ID')}*\n\nTerima kasih.`;
     
         const encodedText = encodeURIComponent(text);
-        const waNumber = "6285313675376"; // You can easily change this number later
+        const waNumber = "6285313675376"; 
         window.open(`https://wa.me/${waNumber}?text=${encodedText}`, "_blank");
     };
 

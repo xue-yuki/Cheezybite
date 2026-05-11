@@ -130,51 +130,35 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 60%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 58%;
     z-index: 2;
-    transform: translateZ(40px); /* Pop out effect */
-    transition: transform 0.6s ease;
-}
-
-.activeCard:hover .productVisual {
-    transform: translateZ(60px) scale(1.05);
+    overflow: hidden;
+    border-radius: 30px 30px 0 0;
 }
 
 /* Product Image and Placeholder Styles */
 .productImage {
-    width: 220px;
-    height: 220px;
-    object-fit: contain;
-    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-    transition: transform 0.4s ease;
-    animation: floatImage 4s ease-in-out infinite alternate;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
 }
 
-@keyframes floatImage {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(-10px) rotate(2deg); }
+.activeCard:hover .productImage {
+    transform: scale(1.05);
 }
 
 .imagePlaceholder {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 2px dashed;
+    width: 100%;
+    height: 100%;
+    border-bottom: 2px dashed rgba(255,255,255,0.4);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
     transition: all 0.3s ease;
-}
-
-.activeCard:hover .imagePlaceholder {
-    transform: scale(1.05);
 }
 
 .placeholderIcon {
@@ -205,7 +189,7 @@
     border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
-    z-index: 1;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
